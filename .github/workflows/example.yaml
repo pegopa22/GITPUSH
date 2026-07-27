@@ -9,5 +9,8 @@ jobs:
   message:
     runs-on: ubuntu-latest
     steps:
-      - name: Print message
-        run: echo "Hello, world!"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Print the Dockerfile
+        run: cat Dockerfile
