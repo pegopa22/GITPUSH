@@ -1,4 +1,4 @@
-name: Example
+name: Build and Push Docker Image
 
 on:
   push:
@@ -6,11 +6,26 @@ on:
       - main
 
 jobs:
-  message:
+  build-and-push:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Print the Dockerfile
-        run: cat Dockerfile
+      # Bonus: Scan for secrets
+      - name: Scan for secrets
+        uses: gitleaks/gitleaks-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: haima1234/gitpush:latest
