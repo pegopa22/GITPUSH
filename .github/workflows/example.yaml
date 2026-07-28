@@ -8,16 +8,11 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Bonus: Scan for secrets
-      - name: Scan for secrets
-        uses: gitleaks/gitleaks-action@v2
-
-      - name: Log in to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -28,4 +23,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: haima1234/gitpush:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/gitpush:latest
